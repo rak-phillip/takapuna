@@ -4,8 +4,9 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+      "label": "extension:dev",
 			"type": "npm",
-			"script": "watch",
+			"script": "extension:dev",
 			"problemMatcher": "$tsc-watch",
 			"isBackground": true,
 			"presentation": {
@@ -14,7 +15,30 @@
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			}
-		}
+			},
+      "dependsOn": ["takapuna-webview"]
+		},
+    {
+      "label": "takapuna-webview",
+      "type": "npm",
+      "script": "webview:dev",
+			"isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(( +ERROR.+)|(\\d+ (error(s)?|warning(s)?) (and \\d+ warning(s)? )?found.))$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^ +INFO +Starting development server\\.\\.\\.$",
+          "endsPattern": "^((.+Compiled successfully in.+)|( +ERROR.+))$"
+        }
+      },
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+			},
+    }
 	]
 }
