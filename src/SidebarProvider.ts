@@ -57,7 +57,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     );
 
     const stylesVue = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'main.css')
+      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'sideBar.css')
     );
 
     const baseUri = webview.asWebviewUri(
