@@ -18,10 +18,10 @@ export default defineComponent({
       Description
       <input>
     </label>
-    <tk-button>
+    <tk-button primary>
       Create issue
     </tk-button>
-    <tk-button>
+    <tk-button secondary>
       Cancel
     </tk-button>
   </div>
