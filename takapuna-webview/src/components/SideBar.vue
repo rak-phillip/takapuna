@@ -1,0 +1,3 @@
+<template>
+  NOT FAIL
+</template>

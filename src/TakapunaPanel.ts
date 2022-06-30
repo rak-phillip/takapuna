@@ -126,12 +126,20 @@ export class TakapunaPanel {
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
-    // // And the uri we use to load this script in the webview
-    const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'index.js')
+    const styleResetUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
     );
+
+    const styleVSCodeUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
+    );
+
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'main.js')
+    );
+
     const stylesVue = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'index.css')
+      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'main.css')
     );
 
     // Uri to load styles into webview
@@ -170,6 +178,13 @@ export class TakapunaPanel {
         <head>
           <meta charset="UTF-8" />
           <link rel="icon" href="/favicon.ico" />
+          <!--
+            Use a content security policy to only allow loading images from https or from our extension directory,
+            and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
+        webview.cspSource
+      }; script-src 'nonce-${nonce}';">
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Vite App</title>
           <script nonce="${nonce}" type="module" crossorigin src="${scriptUri}"></script>

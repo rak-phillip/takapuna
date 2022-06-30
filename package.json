@@ -11,7 +11,9 @@
 	],
 	"activationEvents": [
 		"onCommand:takapuna.helloWorld",
-		"onCommand:takapuna.askQuestion"
+		"onCommand:takapuna.askQuestion",
+    "onCommand:takapuna.refresh",
+    "onView:takapuna-sidebar"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -25,8 +27,33 @@
 				"command": "takapuna.askQuestion",
 				"category": "Takapuna",
 				"title": "Ask a Question"
+			},
+			{
+				"command": "takapuna.refresh",
+				"category": "Takapuna",
+				"title": "Refresh"
 			}
-		]
+		],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "takapuna-sidebar-view",
+          "title": "Takapuna",
+          "icon": "media/kiwi-bird.svg"
+        }
+      ]
+    },
+    "views": {
+      "takapuna-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "takapuna-sidebar",
+          "name": "Takapuna",
+          "icon": "media/kiwi-bird.svg",
+          "contextualTitle": "Takapuna - Track technical debt"
+        }
+      ]
+    }
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
