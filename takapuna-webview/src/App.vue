@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { provide, onMounted, ref } from 'vue';
-import vueLogo from './assets/logo.svg'
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 
@@ -18,8 +17,6 @@ onMounted(() => {
   baseUri.value = dataUri.getAttribute('data-uri') || ''
 })
 
-const logoUri = ref(`${baseUri.value}/assets/${vueLogo}`)
-
 function getNonce() {
 	let text = '';
 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -34,9 +31,7 @@ function getNonce() {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" :src="logoUri" :nonce="getNonce" width="125" height="125" />
-
-    {{ baseUri }}
+    <img alt="Vue logo" class="logo" :src="`${baseUri}/assets/logo.svg`" :nonce="getNonce" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
