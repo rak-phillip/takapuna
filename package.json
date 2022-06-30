@@ -33,8 +33,9 @@
 		"compile": "tsc -p ./",
 		"lint": "eslint . --ext .ts,.tsx",
     "webview:dev": "yarn --cwd takapuna-webview dev",
+    "webview:watch": "yarn --cwd takapuna-webview build:watch",
     "extension:dev": "tsc -watch -p ./",
-		"watch": "concurrently \"yarn webview:dev\" \"yarn extension:dev\""
+		"watch": "concurrently \"yarn webview:watch\" \"yarn extension:dev\""
 	},
 	"devDependencies": {
 		"@types/node": "^16.11.7",
