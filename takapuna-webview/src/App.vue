@@ -17,21 +17,11 @@ onMounted(() => {
   baseUri.value = dataUri.getAttribute('data-uri') || ''
 })
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
-
-
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" :src="`${baseUri}/assets/logo.svg`" :nonce="getNonce" width="125" height="125" />
+    <img alt="Vue logo" class="logo" :src="`${baseUri}/assets/logo.svg`" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
