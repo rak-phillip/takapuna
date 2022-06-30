@@ -99,8 +99,7 @@ export class TakapunaPanel {
   private async _update() {
     const webview = this._panel.webview;
 
-    const assetMap = getVueAssetMap();
-    this._panel.webview.html = this._getHtmlForWebview(webview, assetMap);
+    this._panel.webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "onInfo": {
@@ -126,13 +125,13 @@ export class TakapunaPanel {
     });
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview, assetMap: any) {
+  private _getHtmlForWebview(webview: vscode.Webview) {
     // // And the uri we use to load this script in the webview
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', assetMap.js)
+      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'index.js')
     );
     const stylesVue = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', assetMap.css)
+      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'index.css')
     );
 
     // Uri to load styles into webview
@@ -184,29 +183,4 @@ export class TakapunaPanel {
       </html>
     `;
   }
-}
-
-function getVueAssetMap() {
-  const files = fs.readdirSync(path.join(__dirname, 'dist-takapuna-webview', 'assets'));
-  const assetMap = files.reduce((acc, file) => {
-    if (file.includes('js')) {
-      return { ...acc, js: file };
-    }
-
-    if (file.includes('css')) {
-      return { ...acc, css: file };
-    }
-
-    if (file.includes('svg')) {
-      return { ...acc, svg: file };
-    }
-
-    return acc;
-  }, {
-    js: '',
-    css: '',
-    svg: '',
-  });
-
-  return assetMap;
 }
