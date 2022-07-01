@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>Vite App</title>
+    <script nonce="${nonce}" type="module" crossorigin src="${scriptUri}"></script>
+    <link nonce="${nonce}" rel="stylesheet" href="${stylesVue}">
+  </head>
+  <body>
+    <input hidden data-uri="${baseUri}">
+    <div id="app"></div>
+  </body>
+</html>
+

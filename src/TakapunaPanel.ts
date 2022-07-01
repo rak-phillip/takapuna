@@ -16,7 +16,10 @@ export class TakapunaPanel {
   private readonly _extensionUri: vscode.Uri;
   private _disposables: vscode.Disposable[] = [];
 
-  public static createOrShow(extensionUri: vscode.Uri) {
+  public static createOrShow(
+    extensionUri: vscode.Uri,
+    _context: vscode.ExtensionContext
+  ) {
     const column = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
       : undefined;
@@ -45,7 +48,7 @@ export class TakapunaPanel {
       }
     );
 
-    TakapunaPanel.currentPanel = new TakapunaPanel(panel, extensionUri);
+    TakapunaPanel.currentPanel = new TakapunaPanel(panel, extensionUri, _context);
   }
 
   public static kill() {
@@ -53,11 +56,15 @@ export class TakapunaPanel {
     TakapunaPanel.currentPanel = undefined;
   }
 
-  public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    TakapunaPanel.currentPanel = new TakapunaPanel(panel, extensionUri);
+  public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, _context: vscode.ExtensionContext) {
+    TakapunaPanel.currentPanel = new TakapunaPanel(panel, extensionUri, _context);
   }
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    extensionUri: vscode.Uri,
+    private readonly _context: vscode.ExtensionContext
+  ) {
     this._panel = panel;
     this._extensionUri = extensionUri;
 
@@ -172,30 +179,17 @@ export class TakapunaPanel {
       .toString()
       .replace('%22', '');
 
-    return `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <link rel="icon" href="/favicon.ico" />
-          <!--
-            Use a content security policy to only allow loading images from https or from our extension directory,
-            and only allow scripts that have a specific nonce.
-          -->
-          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
-        webview.cspSource
-      }; script-src 'nonce-${nonce}';">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Vite App</title>
-          <script nonce="${nonce}" type="module" crossorigin src="${scriptUri}"></script>
-          <link nonce="${nonce}" rel="stylesheet" href="${stylesVue}">
-        </head>
-        <body>
-          <input hidden data-uri="${baseUri}">
-          <div id="app"></div>
-          
-        </body>
-      </html>
-    `;
+    const htmlTemplateFile = vscode.Uri.file(
+      path.join(this._context.extensionPath, 'res', 'html', 'index.html')
+    );
+
+    return fs
+      .readFileSync(htmlTemplateFile.path)
+      .toString()
+      .replaceAll('${nonce}', nonce)
+      .replaceAll('${webview.cspSource}', webview.cspSource)
+      .replaceAll('${scriptUri}', scriptUri.toString())
+      .replaceAll('${stylesVue}', stylesVue.toString())
+      .replaceAll('${baseUri}', baseUri);
   }
 }

@@ -7,7 +7,7 @@ import { TakapunaPanel } from './TakapunaPanel';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const sidebarProvider = new SidebarProvider(context.extensionUri);
+  const sidebarProvider = new SidebarProvider(context.extensionUri, context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       'takapuna-sidebar',
@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	const disposable = vscode.commands.registerCommand('takapuna.helloWorld', () => {
-    TakapunaPanel.createOrShow(context.extensionUri);
+    TakapunaPanel.createOrShow(context.extensionUri, context);
 	});
 
 	const refresh = vscode.commands.registerCommand('takapuna.refresh', async () => {

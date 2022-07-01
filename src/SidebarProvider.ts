@@ -1,11 +1,16 @@
 import * as vscode from "vscode";
+import * as path from 'path';
+import * as fs from 'fs';
 import { getNonce } from "./getNonce";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
-  constructor(private readonly _extensionUri: vscode.Uri) {}
+  constructor(
+    private readonly _extensionUri: vscode.Uri,
+    private readonly _context: vscode.ExtensionContext
+  ) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
@@ -72,27 +77,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     // Use a nonce to only allow a specific script to be run.
     const nonce = getNonce();
 
-    return `
-      <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <!--
-            Use a content security policy to only allow loading images from https or from our extension directory,
-            and only allow scripts that have a specific nonce.
-          -->
-          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
-            webview.cspSource
-          }; script-src 'nonce-${nonce}';">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Vite App</title>
-          <script nonce="${nonce}" type="module" crossorigin src="${scriptUri}"></script>
-          <link nonce="${nonce}" rel="stylesheet" href="${stylesVue}">
-        </head>
-        <body>
-          <input hidden data-uri="${baseUri}">
-          <div id="app"></div>
-        </body>
-			</html>`;
+    const htmlTemplateFile = vscode.Uri.file(
+      path.join(this._context.extensionPath, 'res', 'html', 'index.html')
+    );
+
+    return fs
+      .readFileSync(htmlTemplateFile.fsPath, 'utf8')
+      .toString()
+      .replaceAll('${nonce}', nonce.toString())
+      .replaceAll('${webview.cspSource}', webview.cspSource.toString())
+      .replaceAll('${scriptUri}', scriptUri.toString())
+      .replaceAll('${stylesVue}', stylesVue.toString())
+      .replaceAll('${baseUri}', baseUri.toString());
+
   }
 }
