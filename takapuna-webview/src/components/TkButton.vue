@@ -15,11 +15,11 @@ const buttonClass = computed(() => {
     'outline-1': true, 
     'outline-transparent': true, 
     'outline-offset-2': true, 
-    'bg-teal-200': true, 
-    'text-teal-900': true,
+    'bg-tk-button-background': true, 
+    'text-tk-button-foreground': true,
     'hover:cursor-pointer': true,
-    'hover:bg-teal-100': true,
-    'focus:outline-teal-800': true
+    'hover:bg-tk-button-hoverBackground': true,
+    'focus:outline-tk-focusBorder': true
   }
   if (props.primary) {
     return button;
@@ -34,11 +34,11 @@ const buttonClass = computed(() => {
       'outline-1': true, 
       'outline-transparent': true, 
       'outline-offset-2': true, 
-      'bg-slate-600': true, 
-      'text-slate-200': true,
+      'bg-tk-button-secondaryBackground': true, 
+      'text-tk-button-secondaryForeground': true,
       'hover:cursor-pointer': true,
-      'hover:bg-slate-500': true,
-      'focus:outline-slate-800': true
+      'hover:bg-tk-button-secondaryHoverBackground': true,
+      'focus:outline-tk-focusBorder': true
     }
   }
 

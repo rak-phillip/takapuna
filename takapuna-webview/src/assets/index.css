@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --container-padding: 20px;
+    --input-padding-vertical: 6px;
+    --input-padding-horizontal: 4px;
+    --input-margin-vertical: 4px;
+    --input-margin-horizontal: 0;
+    --tk-color: var(--vscode-foreground);
+    --tk-font-size: var(--vscode-font-size);
+    --tk-font-weight: var(--vscode-font-weight);
+    --tk-font-family: var(--vscode-font-family);
+    --tk-background-color: var(--vscode-editor-background);
+    --tk-button-foreground: var(--vscode-button-foreground);
+    --tk-button-background: var(--vscode-button-background);
+    --tk-button-hoverBackground: var(--vscode-button-hoverBackground);
+    --tk-focusBorder: var(--vscode-focusBorder);
+    --tk-button-secondaryForeground: var(--vscode-button-secondaryForeground);
+    --tk-button-secondaryBackground: var(--vscode-button-secondaryBackground);
+    --tk-button-secondaryHoverBackground: var(--vscode-button-secondaryHoverBackground);
+  }
+}
