@@ -1,23 +1,18 @@
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import TkButton from '@/components/TkButton.vue'
+import TkInput from '@/components/TkInput.vue'
 
 export default defineComponent({
   name: 'tk-sidebar',
-  components: { TkButton }
+  components: { TkButton, TkInput }
 })
 </script>
 
 <template>
-  <div class="flex flex-col gap-5">
-    <label class="pt-12">
-      Title
-      <input class="pt-12">
-    </label>
-    <label>
-      Description
-      <input>
-    </label>
+  <div class="flex flex-col gap-2">
+    <tk-input placeholder="Title" />
+    <tk-input placeholder="Description" />
     <tk-button primary>
       Create issue
     </tk-button>
