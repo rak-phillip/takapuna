@@ -16,11 +16,11 @@ export default defineComponent({
   setup() {
     const snippets: Ref<Snippet[]> = ref([]);
     onMounted(() => {
-      window.addEventListener("message", (event) => {
+      window.addEventListener('message', (event) => {
         const message = event.data;
 
         switch (message.type) {
-          case "new-snippet":
+          case 'new-snippet':
             snippets.value = [
               {
                 text: message.value,

@@ -21,9 +21,9 @@ export default defineConfig({
       output: {
         name: 'takapuna-webview',
         sourcemap: false,
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`,
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
         manualChunks: (id) => {
           if (id.includes('pages')) {
             return id.split('pages/')[1].replace('.vue', '');
