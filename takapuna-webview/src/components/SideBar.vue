@@ -20,7 +20,7 @@ export default defineComponent({
       const message = event.data;
 
       switch (message.type) {
-        case 'new-snippet':
+        case 'post-snippet':
           snippets.value = [
             {
               text: message.value,

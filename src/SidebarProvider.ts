@@ -45,12 +45,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         break;
       }
       case 'request-snippet': {
-        this._view?.webview.postMessage({
-          type: 'new-snippet',
-          value: this._text,
-          anchor: this._anchor,
-          active: this._active,
-        });
+        this.postSnippet();
       }
       }
     });
@@ -76,12 +71,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       this._anchor = anchor.line;
       this._active = active.line;
 
-      this._view?.webview.postMessage({
-        type: 'new-snippet',
-        value: this._text,
-        anchor: this._anchor,
-        active: this._active,
-      });
+      this.postSnippet();
+    });
+  }
+
+  private postSnippet() {
+    this._view?.webview.postMessage({
+      type: 'post-snippet',
+      value: this._text,
+      anchor: this._anchor,
+      active: this._active,
     });
   }
 
