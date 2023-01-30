@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}'
+    './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   theme: {
     fontFamily: {
@@ -35,8 +35,8 @@ module.exports = {
       },
       padding: {
         'input-padding-vertical': 'var(--input-padding-vertical)',
-        'input-padding-horizontal': 'var(--input-padding-horizontal)'
-      }
+        'input-padding-horizontal': 'var(--input-padding-horizontal)',
+      },
     },
   },
   plugins: [],

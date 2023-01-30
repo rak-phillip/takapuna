@@ -9,14 +9,14 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/main.ts'),
-        sideBar: resolve(__dirname, 'src/pages/side-bar.ts')
+        sideBar: resolve(__dirname, 'src/pages/side-bar.ts'),
       },
       output: {
         name: 'takapuna-webview',
@@ -28,9 +28,9 @@ export default defineConfig({
           if (id.includes('pages')) {
             return id.split('pages/')[1].replace('.vue', '');
           }
-        }
+        },
       },
     },
-    outDir: '../out/dist-takapuna-webview'
-  }
+    outDir: '../out/dist-takapuna-webview',
+  },
 });

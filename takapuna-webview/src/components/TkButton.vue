@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
   primary: Boolean,
-  secondary: Boolean
+  secondary: Boolean,
 });
 
 const buttonClass = computed(() => {
@@ -16,7 +16,7 @@ const buttonClass = computed(() => {
     'outline-transparent': true, 
     'outline-offset-2': true, 
     'hover:cursor-pointer': true,
-    'focus:outline-tk-focusBorder': true
+    'focus:outline-tk-focusBorder': true,
   };
   if (props.primary) {
     return {
@@ -32,7 +32,7 @@ const buttonClass = computed(() => {
       ...button,
       'bg-tk-button-secondaryBackground': true, 
       'text-tk-button-secondaryForeground': true,
-      'hover:bg-tk-button-secondaryHoverBackground': true
+      'hover:bg-tk-button-secondaryHoverBackground': true,
     };
   }
 

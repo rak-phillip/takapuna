@@ -25,9 +25,9 @@ export default defineComponent({
               {
                 text: message.value,
                 anchor: message.anchor,
-                active: message.active
+                active: message.active,
               },
-              ...snippets.value
+              ...snippets.value,
             ];
             break;
         }
@@ -37,7 +37,7 @@ export default defineComponent({
     return {
       snippets,
     };
-  }
+  },
 });
 </script>
 
