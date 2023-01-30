@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { provide, onMounted, ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import HelloWorld from './components/HelloWorld.vue';
+import TheWelcome from './components/TheWelcome.vue';
 
 
-const baseUri = ref('')
-provide('baseUri', baseUri)
+const baseUri = ref('');
+provide('baseUri', baseUri);
 
 onMounted(() => {
-  const dataUri = document.querySelector('input[data-uri]')
+  const dataUri = document.querySelector('input[data-uri]');
 
   if (!dataUri) {
-    return
+    return;
   }
 
-  baseUri.value = dataUri.getAttribute('data-uri') || ''
-})
+  baseUri.value = dataUri.getAttribute('data-uri') || '';
+});
 
 </script>
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   primary: Boolean,
   secondary: Boolean
-})
+});
 
 const buttonClass = computed(() => {
   const button = {
@@ -17,7 +17,7 @@ const buttonClass = computed(() => {
     'outline-offset-2': true, 
     'hover:cursor-pointer': true,
     'focus:outline-tk-focusBorder': true
-  }
+  };
   if (props.primary) {
     return {
       ...button,
@@ -33,11 +33,11 @@ const buttonClass = computed(() => {
       'bg-tk-button-secondaryBackground': true, 
       'text-tk-button-secondaryForeground': true,
       'hover:bg-tk-button-secondaryHoverBackground': true
-    }
+    };
   }
 
-  return { }
-})
+  return { };
+});
 
 </script>
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
-import type { Ref } from 'vue'
-import TkButton from '@/components/TkButton.vue'
-import TkInput from '@/components/TkInput.vue'
+import { defineComponent, onMounted, ref } from 'vue';
+import type { Ref } from 'vue';
+import TkButton from '@/components/TkButton.vue';
+import TkInput from '@/components/TkInput.vue';
 
 interface Snippet {
   text: string;
@@ -28,17 +28,17 @@ export default defineComponent({
                 active: message.active
               },
               ...snippets.value
-            ]
+            ];
             break;
         }
-      })
-    })
+      });
+    });
 
     return {
       snippets,
-    }
+    };
   }
-})
+});
 </script>
 
 <template>
