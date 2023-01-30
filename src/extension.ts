@@ -44,7 +44,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   });
 
+  const openSidebar = vscode.commands.registerCommand('takapuna.openSidebar', async () => {
+    await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
+  });
+
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(question);
 	context.subscriptions.push(refresh);
+  context.subscriptions.push(openSidebar);
 }

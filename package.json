@@ -13,6 +13,7 @@
 		"onCommand:takapuna.helloWorld",
 		"onCommand:takapuna.askQuestion",
     "onCommand:takapuna.refresh",
+    "onCommand:takapuna.openSidebar",
     "onView:takapuna-sidebar"
 	],
 	"main": "./out/extension.js",
@@ -32,8 +33,20 @@
 				"command": "takapuna.refresh",
 				"category": "Takapuna",
 				"title": "Refresh"
+			},
+			{
+				"command": "takapuna.openSidebar",
+				"category": "Takapuna",
+				"title": "Create Issue"
 			}
 		],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "takapuna.openSidebar"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {
