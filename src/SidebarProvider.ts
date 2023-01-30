@@ -30,28 +30,28 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-        case "onInfo": {
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showInformationMessage(data.value);
-          break;
+      case "onInfo": {
+        if (!data.value) {
+          return;
         }
-        case "onError": {
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showErrorMessage(data.value);
-          break;
+        vscode.window.showInformationMessage(data.value);
+        break;
+      }
+      case "onError": {
+        if (!data.value) {
+          return;
         }
-        case 'request-snippet': {
-          this._view?.webview.postMessage({
-            type: 'new-snippet',
-            value: this._text,
-            anchor: this._anchor,
-            active: this._active,
-          });
-        }
+        vscode.window.showErrorMessage(data.value);
+        break;
+      }
+      case 'request-snippet': {
+        this._view?.webview.postMessage({
+          type: 'new-snippet',
+          value: this._text,
+          anchor: this._anchor,
+          active: this._active,
+        });
+      }
       }
     });
   }
@@ -62,29 +62,27 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   public activate() {
     return vscode.commands.registerCommand('takapuna.openSidebar', async () => {
-    const { activeTextEditor } = vscode.window;
-    
-    if (!activeTextEditor) {
-      vscode.window.showInformationMessage("No active text editor");
-      return;
-    }
+      const { activeTextEditor } = vscode.window;
+      
+      if (!activeTextEditor) {
+        vscode.window.showInformationMessage("No active text editor");
+        return;
+      }
 
-    await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
+      await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
 
-    const { anchor, active } = activeTextEditor.selection;
-    this._text = activeTextEditor.document.getText(activeTextEditor.selection);
-    this._anchor = anchor.line;
-    this._active = active.line;
+      const { anchor, active } = activeTextEditor.selection;
+      this._text = activeTextEditor.document.getText(activeTextEditor.selection);
+      this._anchor = anchor.line;
+      this._active = active.line;
 
-    this._view?.webview.postMessage({
-      type: 'new-snippet',
-      value: this._text,
-      anchor: this._anchor,
-      active: this._active,
+      this._view?.webview.postMessage({
+        type: 'new-snippet',
+        value: this._text,
+        anchor: this._anchor,
+        active: this._active,
+      });
     });
-  });
-
-
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
