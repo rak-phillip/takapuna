@@ -44,29 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   });
 
-  const openSidebar = vscode.commands.registerCommand('takapuna.openSidebar', async () => {
-    const { activeTextEditor } = vscode.window;
-    
-    if (!activeTextEditor) {
-      vscode.window.showInformationMessage("No active text editor");
-      return;
-    }
-
-    const { anchor, active } = activeTextEditor.selection;
-    const text = activeTextEditor.document.getText(activeTextEditor.selection);
-
-    sidebarProvider._view?.webview.postMessage({
-      type: 'new-snippet',
-      value: text,
-      anchor: anchor.line,
-      active: active.line,
-    });
-
-    await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
-  });
-
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(question);
 	context.subscriptions.push(refresh);
-  context.subscriptions.push(openSidebar);
+  context.subscriptions.push(sidebarProvider.activate());
 }

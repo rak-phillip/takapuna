@@ -7,6 +7,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
+  _text = '';
+  _anchor?: number = undefined;
+  _active?: number = undefined;
+
   constructor(
     private readonly _extensionUri: vscode.Uri,
     private readonly _context: vscode.ExtensionContext
@@ -25,6 +29,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
+      console.log('SIDEBAR PROVIDER', { data });
       switch (data.type) {
         case "onInfo": {
           if (!data.value) {
@@ -40,12 +45,48 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           vscode.window.showErrorMessage(data.value);
           break;
         }
+        case 'request-snippet': {
+          console.log('NOT FAIL');
+          this._view?.webview.postMessage({
+            type: 'new-snippet',
+            value: this._text,
+            anchor: this._anchor,
+            active: this._active,
+          });
+        }
       }
     });
   }
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
+  }
+
+  public activate() {
+    return vscode.commands.registerCommand('takapuna.openSidebar', async () => {
+    const { activeTextEditor } = vscode.window;
+    
+    if (!activeTextEditor) {
+      vscode.window.showInformationMessage("No active text editor");
+      return;
+    }
+
+    await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
+
+    const { anchor, active } = activeTextEditor.selection;
+    this._text = activeTextEditor.document.getText(activeTextEditor.selection);
+    this._anchor = anchor.line;
+    this._active = active.line;
+
+    this._view?.webview.postMessage({
+      type: 'new-snippet',
+      value: this._text,
+      anchor: this._anchor,
+      active: this._active,
+    });
+  });
+
+
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
