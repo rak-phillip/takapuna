@@ -29,7 +29,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      console.log('SIDEBAR PROVIDER', { data });
       switch (data.type) {
         case "onInfo": {
           if (!data.value) {
@@ -46,7 +45,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           break;
         }
         case 'request-snippet': {
-          console.log('NOT FAIL');
           this._view?.webview.postMessage({
             type: 'new-snippet',
             value: this._text,
