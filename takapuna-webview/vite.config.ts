@@ -24,7 +24,7 @@ export default defineConfig({
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
         assetFileNames: `assets/[name].[ext]`,
-        manualChunks: (id, { getModuleIds, getModuleInfo }) => {
+        manualChunks: (id) => {
           if (id.includes('pages')) {
             return id.split('pages/')[1].replace('.vue', '');
           }

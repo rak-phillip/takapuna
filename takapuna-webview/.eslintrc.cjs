@@ -7,5 +7,13 @@ module.exports = {
     "plugin:vue/vue3-essential",
     "eslint:recommended",
     "@vue/eslint-config-typescript/recommended"
-  ]
+  ],
+  "overrides": [
+    {
+      files: ['*.config.js'],
+      env: {
+        node: true,
+      },
+    },
+  ],
 }
