@@ -15,14 +15,14 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('takapuna.helloWorld', () => {
+  // The command has been defined in the package.json file
+  // Now provide the implementation of the command with registerCommand
+  // The commandId parameter must match the command field in package.json
+  const disposable = vscode.commands.registerCommand('takapuna.helloWorld', () => {
     TakapunaPanel.createOrShow(context.extensionUri, context);
-	});
+  });
 
-	const refresh = vscode.commands.registerCommand('takapuna.refresh', async () => {
+  const refresh = vscode.commands.registerCommand('takapuna.refresh', async () => {
     // TakapunaPanel.kill();
     // TakapunaPanel.createOrShow(context.extensionUri);
     await vscode.commands.executeCommand("workbench.action.closeSidebar");
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
     setTimeout(() => { 
       vscode.commands.executeCommand('workbench.action.webview.openDeveloperTools');
     }, 500);
-	});
+  });
 
   const question = vscode.commands.registerCommand('takapuna.askQuestion', async () => {
     const answer = await vscode.window.showInformationMessage('how was your day?', 'good', 'bad');
@@ -44,8 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   });
 
-	context.subscriptions.push(disposable);
-	context.subscriptions.push(question);
-	context.subscriptions.push(refresh);
+  context.subscriptions.push(disposable);
+  context.subscriptions.push(question);
+  context.subscriptions.push(refresh);
   context.subscriptions.push(sidebarProvider.activate());
 }

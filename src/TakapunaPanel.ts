@@ -109,20 +109,20 @@ export class TakapunaPanel {
     this._panel.webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-        case "onInfo": {
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showInformationMessage(data.value);
-          break;
+      case "onInfo": {
+        if (!data.value) {
+          return;
         }
-        case "onError": {
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showErrorMessage(data.value);
-          break;
+        vscode.window.showInformationMessage(data.value);
+        break;
+      }
+      case "onError": {
+        if (!data.value) {
+          return;
         }
+        vscode.window.showErrorMessage(data.value);
+        break;
+      }
         // case "tokens": {
         //   await Util.globalState.update(accessTokenKey, data.accessToken);
         //   await Util.globalState.update(refreshTokenKey, data.refreshToken);
@@ -162,7 +162,7 @@ export class TakapunaPanel {
         this._extensionUri,
         "media",
         "vscode.css"
-    ));
+      ));
     // const cssUri = webview.asWebviewUri(
     //   vscode.Uri.joinPath(this._extensionUri, "out", "compiled/swiper.css")
     // );
