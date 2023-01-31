@@ -16,6 +16,8 @@
 		"onCommand:takapuna.openSidebar",
 		"onView:takapuna-sidebar"
 	],
+  "private": true,
+  "workspaces": ["takapuna-webview"],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
