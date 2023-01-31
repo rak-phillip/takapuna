@@ -3,6 +3,9 @@ import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import type { Ref } from 'vue';
 import TkButton from '@/components/TkButton.vue';
 import TkInput from '@/components/TkInput.vue';
+import type { WebviewApi } from 'vscode-webview';
+
+declare function acquireVsCodeApi(): WebviewApi<unknown>;
 
 interface Snippet {
   text: string;
