@@ -3,6 +3,7 @@ import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import type { Ref } from 'vue';
 import TkButton from '@/components/TkButton.vue';
 import TkInput from '@/components/TkInput.vue';
+import TkCodeListItem from './TkCodeListItem.vue';
 import type { WebviewApi } from 'vscode-webview';
 
 declare function acquireVsCodeApi(): WebviewApi<unknown>;
@@ -15,7 +16,7 @@ interface Snippet {
 
 export default defineComponent({
   name: 'tk-sidebar',
-  components: { TkButton, TkInput },
+  components: { TkButton, TkInput, TkCodeListItem },
   setup() {
     const snippets: Ref<Snippet[]> = ref([]);
 
@@ -37,7 +38,6 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      console.log('ADD EVENT LISTENER');
       window.addEventListener('message', processIncomingSnippet, false);
       const vscode = acquireVsCodeApi();
       vscode.postMessage({
@@ -46,7 +46,6 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      console.log('REMOVE EVENT LISTENER');
       window.removeEventListener('message', processIncomingSnippet, false);
     });
 
@@ -61,7 +60,9 @@ export default defineComponent({
   <div class="flex flex-col gap-2">
     <tk-input placeholder="Title" />
     <tk-input placeholder="Description" />
-    {{ snippets }}
+    <template v-for="snippet in snippets">
+      <tk-code-list-item :code="snippet.text"/>
+    </template>
     <tk-button primary>
       Create issue
     </tk-button>
