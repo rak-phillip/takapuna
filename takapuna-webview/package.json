@@ -11,9 +11,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "highlight.js": "^11.7.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/node": "^16.11.41",
     "@types/vscode-webview": "^1.57.1",
