@@ -74,7 +74,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-  .code-block::v-deep code {
+  .code-block:deep(code) {
     background-color: #1f2937;
   }
 </style>
