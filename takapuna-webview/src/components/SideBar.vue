@@ -16,6 +16,8 @@ interface Snippet {
   active: number;
 }
 
+const vscode = acquireVsCodeApi();
+
 export default defineComponent({
   name: 'tk-sidebar',
   components: { TkButton, TkInput, TkCodeListItem },
@@ -43,7 +45,6 @@ export default defineComponent({
 
     onBeforeMount(() => {
       window.addEventListener('message', processIncomingSnippet, false);
-      const vscode = acquireVsCodeApi();
       vscode.postMessage({
         type: 'request-snippet',
       });
@@ -53,8 +54,16 @@ export default defineComponent({
       window.removeEventListener('message', processIncomingSnippet, false);
     });
 
+    function createIssue() {
+      console.log('CREATE ISSUE');
+      vscode.postMessage({
+        type: 'issue-create'
+      })
+    }
+
     return {
       snippets,
+      createIssue,
     };
   },
 });
@@ -72,7 +81,10 @@ export default defineComponent({
         :code="snippet.text"
       />
     </template>
-    <tk-button primary>
+    <tk-button 
+      primary
+      @click="createIssue"
+    >
       Create issue
     </tk-button>
     <tk-button secondary>

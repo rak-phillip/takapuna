@@ -3,6 +3,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { getNonce } from './getNonce';
 import uniqueId from 'lodash.uniqueid';
+import { Octokit } from '@octokit/rest';
+import { PatManager } from './PatManager';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -49,6 +51,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       }
       case 'request-snippet': {
         this.postSnippet();
+        break;
+      }
+      case 'issue-create': {
+        this.issueCreate();
+        break;
       }
       }
     });
@@ -93,6 +100,23 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       anchor: this._anchor,
       active: this._active,
     });
+  }
+
+  private async issueCreate() {
+    const authToken = await PatManager.getToken();
+    const octokit = new Octokit({
+      auth: authToken,
+    });
+  
+    const response = await octokit.request(
+      'GET /repos/{owner}/{repo}/issues',
+      {
+        owner: 'github',
+        repo: 'docs',
+        per_page: 2,
+      });
+
+    vscode.window.showInformationMessage(`GOT RESPONSE: ${ response.data.map(x => x.title) }`);
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
