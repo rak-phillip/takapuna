@@ -15,9 +15,14 @@ export class GithubProvider {
           prompt: 'Add a new Github PAT for Takapuna to use',
         });
 
+        if (!PAT) {
+          vscode.window.showWarningMessage('Takapuna: Cancelled adding PAT');
+          return;
+        }
+
         await PatManager.setToken(PAT);
 
-        vscode.window.showInformationMessage(`YOUR PAT: ${ PatManager.getToken() }`);
+        vscode.window.showInformationMessage('Takapuna: Successfully added PAT');
       }
     );
   }
