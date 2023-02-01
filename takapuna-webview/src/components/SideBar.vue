@@ -65,7 +65,6 @@ export default defineComponent({
     <tk-input placeholder="Title" />
     <tk-input placeholder="Description" />
     <template v-for="snippet in snippets">
-      {{ snippet.id }}
       <tk-code-list-item 
         :anchor="snippet.anchor"
         :active="snippet.active"

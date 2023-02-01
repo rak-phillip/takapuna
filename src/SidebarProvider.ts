@@ -81,6 +81,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   private postSnippet() {
+    if (!this._fileName) {
+      return;
+    }
+
     this._view?.webview.postMessage({
       type: 'post-snippet',
       id: this._id,
