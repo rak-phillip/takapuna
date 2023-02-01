@@ -46,7 +46,7 @@ export default defineComponent({
 <template>
   <div 
     class="
-      bg-neutral-700
+      bg-gray-700
       rounded-sm
     "
   >
@@ -59,17 +59,14 @@ export default defineComponent({
         font-mono
         text-[12px]
         line-height-[16px]
-        text-neutral-400
+        text-gray-400
       "
     >
       <span>{{ fileName }}</span>
       <span>Lines {{ anchorLine }} to {{ activeLine }}</span>
     </div>
     <highlightjs
-      class="
-        code-block
-        bg-gray-900
-      "
+      class="code-block"
       language="javascript"
       :code="code"
     />
@@ -78,6 +75,6 @@ export default defineComponent({
 
 <style scoped>
   .code-block::v-deep code {
-    background-color: #262626;
+    background-color: #1f2937;
   }
 </style>
