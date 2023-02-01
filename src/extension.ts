@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import { SidebarProvider } from './SidebarProvider';
 import { TakapunaPanel } from './TakapunaPanel';
+import { activate as activateGithub } from './GithubProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -48,4 +49,5 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(question);
   context.subscriptions.push(refresh);
   context.subscriptions.push(sidebarProvider.activate());
+  context.subscriptions.push(activateGithub());
 }
