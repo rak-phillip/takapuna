@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { getNonce } from "./getNonce";
+import { getNonce } from './getNonce';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -31,14 +31,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-      case "onInfo": {
+      case 'onInfo': {
         if (!data.value) {
           return;
         }
         vscode.window.showInformationMessage(data.value);
         break;
       }
-      case "onError": {
+      case 'onError': {
         if (!data.value) {
           return;
         }
@@ -61,11 +61,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       const { activeTextEditor } = vscode.window;
       
       if (!activeTextEditor) {
-        vscode.window.showInformationMessage("No active text editor");
+        vscode.window.showInformationMessage('No active text editor');
         return;
       }
 
-      await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
+      await vscode.commands.executeCommand('workbench.view.extension.takapuna-sidebar-view');
 
       const { anchor, active } = activeTextEditor.selection;
       this._fileName = activeTextEditor.document.fileName;
@@ -89,19 +89,19 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css')
     );
 
     const styleVSCodeUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css')
     );
 
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'sideBar.js')
+      vscode.Uri.joinPath(this._extensionUri, 'out', 'dist-takapuna-webview', 'assets', 'sideBar.js')
     );
 
     const stylesVue = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'sideBar.css')
+      vscode.Uri.joinPath(this._extensionUri, 'out', 'dist-takapuna-webview', 'assets', 'sideBar.css')
     );
 
     const baseUri = webview.asWebviewUri(

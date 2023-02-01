@@ -1,8 +1,8 @@
-import path = require("path");
+import path = require('path');
 import fs = require('fs');
 import glob = require('glob');
-import * as vscode from "vscode";
-import { getNonce } from "./getNonce";
+import * as vscode from 'vscode';
+import { getNonce } from './getNonce';
 
 export class TakapunaPanel {
   /**
@@ -10,7 +10,7 @@ export class TakapunaPanel {
    */
   public static currentPanel: TakapunaPanel | undefined;
 
-  public static readonly viewType = "takapuna";
+  public static readonly viewType = 'takapuna';
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionUri: vscode.Uri;
@@ -34,7 +34,7 @@ export class TakapunaPanel {
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       TakapunaPanel.viewType,
-      "Takapuna",
+      'Takapuna',
       column || vscode.ViewColumn.One,
       {
         // Enable javascript in the webview
@@ -42,8 +42,8 @@ export class TakapunaPanel {
 
         // And restrict the webview to only loading content from our extension's `media` directory.
         localResourceRoots: [
-          vscode.Uri.joinPath(extensionUri, "media"),
-          vscode.Uri.joinPath(extensionUri, "out"),
+          vscode.Uri.joinPath(extensionUri, 'media'),
+          vscode.Uri.joinPath(extensionUri, 'out'),
         ],
       }
     );
@@ -109,14 +109,14 @@ export class TakapunaPanel {
     this._panel.webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-      case "onInfo": {
+      case 'onInfo': {
         if (!data.value) {
           return;
         }
         vscode.window.showInformationMessage(data.value);
         break;
       }
-      case "onError": {
+      case 'onError': {
         if (!data.value) {
           return;
         }
@@ -134,34 +134,34 @@ export class TakapunaPanel {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css')
     );
 
     const styleVSCodeUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css')
     );
 
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'main.js')
+      vscode.Uri.joinPath(this._extensionUri, 'out', 'dist-takapuna-webview', 'assets', 'main.js')
     );
 
     const stylesVue = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "dist-takapuna-webview", 'assets', 'main.css')
+      vscode.Uri.joinPath(this._extensionUri, 'out', 'dist-takapuna-webview', 'assets', 'main.css')
     );
 
     // Uri to load styles into webview
     const stylesResetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(
         this._extensionUri,
-        "media",
-        "reset.css"
+        'media',
+        'reset.css'
       )
     );
     const stylesMainUri = webview.asWebviewUri(
       vscode.Uri.joinPath(
         this._extensionUri,
-        "media",
-        "vscode.css"
+        'media',
+        'vscode.css'
       ));
     // const cssUri = webview.asWebviewUri(
     //   vscode.Uri.joinPath(this._extensionUri, "out", "compiled/swiper.css")

@@ -25,8 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
   const refresh = vscode.commands.registerCommand('takapuna.refresh', async () => {
     // TakapunaPanel.kill();
     // TakapunaPanel.createOrShow(context.extensionUri);
-    await vscode.commands.executeCommand("workbench.action.closeSidebar");
-    await vscode.commands.executeCommand("workbench.view.extension.takapuna-sidebar-view");
+    await vscode.commands.executeCommand('workbench.action.closeSidebar');
+    await vscode.commands.executeCommand('workbench.view.extension.takapuna-sidebar-view');
     setTimeout(() => { 
       vscode.commands.executeCommand('workbench.action.webview.openDeveloperTools');
     }, 500);
