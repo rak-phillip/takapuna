@@ -3,11 +3,14 @@
 import * as vscode from 'vscode';
 import { SidebarProvider } from './SidebarProvider';
 import { TakapunaPanel } from './TakapunaPanel';
-import { activate as activateGithub } from './GithubProvider';
+import { GithubProvider } from './GithubProvider';
+import { PatManager } from './PatManager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  PatManager.globalState = context.globalState;
+
   const sidebarProvider = new SidebarProvider(context.extensionUri, context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
@@ -15,6 +18,8 @@ export function activate(context: vscode.ExtensionContext) {
       sidebarProvider
     )
   );
+
+  const githubProvider = new GithubProvider(context);
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
@@ -49,5 +54,5 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(question);
   context.subscriptions.push(refresh);
   context.subscriptions.push(sidebarProvider.activate());
-  context.subscriptions.push(activateGithub());
+  context.subscriptions.push(githubProvider.activate());
 }
