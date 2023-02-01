@@ -2,11 +2,13 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getNonce } from './getNonce';
+import uniqueId from 'lodash.uniqueid';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
+  _id = uniqueId();
   _fileName = '';
   _text = '';
   _anchor?: number = undefined;
@@ -68,6 +70,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       await vscode.commands.executeCommand('workbench.view.extension.takapuna-sidebar-view');
 
       const { anchor, active } = activeTextEditor.selection;
+      this._id = uniqueId();
       this._fileName = activeTextEditor.document.fileName;
       this._text = activeTextEditor.document.getText(activeTextEditor.selection);
       this._anchor = anchor.line;
@@ -80,6 +83,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   private postSnippet() {
     this._view?.webview.postMessage({
       type: 'post-snippet',
+      id: this._id,
       fileName: this._fileName,
       value: this._text,
       anchor: this._anchor,

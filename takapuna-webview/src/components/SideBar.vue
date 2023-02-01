@@ -9,6 +9,7 @@ import type { WebviewApi } from 'vscode-webview';
 declare function acquireVsCodeApi(): WebviewApi<unknown>;
 
 interface Snippet {
+  id: number,
   fileName: string;
   text: string;
   anchor: number;
@@ -28,6 +29,7 @@ export default defineComponent({
         case 'post-snippet':
           snippets.value = [
             {
+              id: message.id,
               fileName: message.fileName,
               text: message.value,
               anchor: message.anchor,
@@ -63,6 +65,7 @@ export default defineComponent({
     <tk-input placeholder="Title" />
     <tk-input placeholder="Description" />
     <template v-for="snippet in snippets">
+      {{ snippet.id }}
       <tk-code-list-item 
         :anchor="snippet.anchor"
         :active="snippet.active"
