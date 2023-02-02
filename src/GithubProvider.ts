@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { PatManager } from './PatManager';
 import { simpleGit, SimpleGit, SimpleGitOptions } from 'simple-git';
 import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
+import GitUrlParse from 'git-url-parse';
 
 const workspaceFolders = vscode.workspace.workspaceFolders;
 const baseDir = workspaceFolders && workspaceFolders[0].uri.fsPath;
@@ -68,7 +69,7 @@ export class GithubProvider {
           return;
         }
 
-        const [_, owner, repo] = new URL(remote.description)
+        const [_, owner, repo] = GitUrlParse(remote.description)
           .pathname
           .split('/');
         

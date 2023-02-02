@@ -5,6 +5,7 @@ import { getNonce } from './getNonce';
 import uniqueId from 'lodash.uniqueid';
 import { Octokit } from '@octokit/rest';
 import { PatManager } from './PatManager';
+import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -108,15 +109,24 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       auth: authToken,
     });
   
+    const owner = GlobalStateManager.getState(GlobalStateKeys.RepoOwner);
+    const repo = GlobalStateManager.getState(GlobalStateKeys.Repo);
+  
+    if (!owner || !repo) {
+      return;
+    }
+  
     const response = await octokit.request(
-      'GET /repos/{owner}/{repo}/issues',
+      'POST /repos/{owner}/{repo}/issues',
       {
-        owner: 'github',
-        repo: 'docs',
-        per_page: 2,
-      });
+        owner,
+        repo,
+        title: 'Found a bug',
+        body: 'I\'m having a problem with this.',
+      }
+    );
 
-    vscode.window.showInformationMessage(`GOT RESPONSE: ${ response.data.map(x => x.title) }`);
+    vscode.window.showInformationMessage(`Created Issue #${ response.data.number }: ${ response.data.title }`);
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {

@@ -14,7 +14,7 @@ export class GlobalStateManager {
     return this.globalState.update(key, value);
   }
 
-  static getState(key: string) {
+  static getState(key: string): string | undefined {
     return this.globalState.get(key);
   }
 }
