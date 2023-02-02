@@ -5,10 +5,12 @@ import { SidebarProvider } from './SidebarProvider';
 import { TakapunaPanel } from './TakapunaPanel';
 import { GithubProvider } from './GithubProvider';
 import { PatManager } from './PatManager';
+import { GlobalStateManager } from './GlobalStateManager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  GlobalStateManager.globalState = context.globalState;
   PatManager.globalState = context.globalState;
 
   const sidebarProvider = new SidebarProvider(context.extensionUri, context);
