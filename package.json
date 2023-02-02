@@ -94,6 +94,7 @@
 		"watch": "concurrently \"yarn webview:watch\" \"yarn extension:dev\""
 	},
 	"devDependencies": {
+		"@types/git-url-parse": "^9.0.1",
 		"@types/lodash.uniqueid": "^4.0.7",
 		"@types/node": "^16.11.7",
 		"@types/vscode": "^1.51.0",
