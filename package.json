@@ -106,6 +106,7 @@
 	},
 	"dependencies": {
 		"@octokit/rest": "^19.0.7",
+		"git-url-parse": "^13.1.0",
 		"lodash.uniqueid": "^4.0.1",
 		"simple-git": "^3.16.0"
 	}
