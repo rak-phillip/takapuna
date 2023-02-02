@@ -14,7 +14,8 @@
 		"onCommand:takapuna.askQuestion",
 		"onCommand:takapuna.refresh",
 		"onCommand:takapuna.openSidebar",
-    "onCommand:takapuna.addPat",
+		"onCommand:takapuna.addPat",
+		"onCommand:takapuna.selectRemote",
 		"onView:takapuna-sidebar"
 	],
 	"private": true,
@@ -44,11 +45,16 @@
 				"category": "Takapuna",
 				"title": "Create Issue"
 			},
-      {
-        "command": "takapuna.addPat",
-        "category": "Takapuna",
-        "title": "Add Personal Access Token (PAT)"
-      }
+			{
+				"command": "takapuna.addPat",
+				"category": "Takapuna",
+				"title": "Add Personal Access Token (PAT)"
+			},
+			{
+				"command": "takapuna.selectRemote",
+				"category": "Takapuna",
+				"title": "Select git upstream"
+			}
 		],
 		"menus": {
 			"editor/context": [
@@ -100,6 +106,7 @@
 	},
 	"dependencies": {
 		"@octokit/rest": "^19.0.7",
-		"lodash.uniqueid": "^4.0.1"
+		"lodash.uniqueid": "^4.0.1",
+		"simple-git": "^3.16.0"
 	}
 }
