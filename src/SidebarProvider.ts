@@ -93,10 +93,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       return;
     }
 
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    const baseDir = workspaceFolders ? workspaceFolders[0].uri.fsPath : '';
+
     this._view?.webview.postMessage({
       type: 'post-snippet',
       id: this._id,
       fileName: this._fileName,
+      relativePath: this._fileName.replaceAll(baseDir, ''),
       value: this._text,
       anchor: this._anchor,
       active: this._active,
@@ -115,8 +119,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     if (!owner || !repo) {
       return;
     }
-  
-    console.log({title, body});
   
     const response = await octokit.request(
       'POST /repos/{owner}/{repo}/issues',

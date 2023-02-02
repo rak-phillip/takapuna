@@ -11,6 +11,7 @@ declare function acquireVsCodeApi(): WebviewApi<unknown>;
 interface Snippet {
   id: number,
   fileName: string;
+  relativePath: string;
   text: string;
   anchor: number;
   active: number;
@@ -35,6 +36,7 @@ export default defineComponent({
             {
               id: message.id,
               fileName: message.fileName,
+              relativePath: message.relativePath,
               text: message.value,
               anchor: message.anchor,
               active: message.active,
@@ -88,7 +90,7 @@ export default defineComponent({
       <tk-code-list-item 
         :anchor="snippet.anchor"
         :active="snippet.active"
-        :file-name="snippet.fileName"
+        :file-name="snippet.relativePath"
         :code="snippet.text"
       />
     </template>
