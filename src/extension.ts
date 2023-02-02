@@ -57,4 +57,5 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(refresh);
   context.subscriptions.push(sidebarProvider.activate());
   context.subscriptions.push(githubProvider.activate());
+  context.subscriptions.push(githubProvider.listRemote());
 }
