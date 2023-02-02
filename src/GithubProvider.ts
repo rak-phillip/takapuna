@@ -92,3 +92,8 @@ export class GithubProvider {
   }
 }
 
+export const getHash = async () => {
+  const logs = await git.log();
+  return logs?.latest?.hash;
+};
+

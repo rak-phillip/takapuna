@@ -63,6 +63,9 @@ export default defineComponent({
         type: 'issue-create',
         title: title.value,
         body: body.value,
+        relativePath: snippets.value[0].relativePath,
+        anchor: snippets.value[0].anchor + 1,
+        active: snippets.value[0].active + 1,
       })
     }
 

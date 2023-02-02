@@ -6,6 +6,8 @@ import uniqueId from 'lodash.uniqueid';
 import { Octokit } from '@octokit/rest';
 import { PatManager } from './PatManager';
 import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
+import simpleGit from 'simple-git';
+import { getHash } from './GithubProvider';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -55,7 +57,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         break;
       }
       case 'issue-create': {
-        this.issueCreate(data.title, data.body);
+        this.issueCreate(data.title, data.body, data.relativePath, data.anchor, data.active);
         break;
       }
       }
@@ -107,7 +109,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  private async issueCreate(title: string, body: string) {
+  private async issueCreate(title: string, body: string, relativePath: string, lineStart: number, lineEnd: number) {
     const authToken = await PatManager.getToken();
     const octokit = new Octokit({
       auth: authToken,
@@ -120,13 +122,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       return;
     }
   
+    const hash = await getHash();
+    const url = `https://github.com/${owner}/${repo}/blob/${hash}/${relativePath}#L${lineStart}-L${lineEnd}`;
+  
+    const bodyMod = `${body}\n\n${url}`;
+  
     const response = await octokit.request(
       'POST /repos/{owner}/{repo}/issues',
       {
         owner,
         repo,
         title,
-        body,
+        body: bodyMod,
       }
     );
 
