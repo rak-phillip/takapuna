@@ -1,5 +1,12 @@
 import * as vscode from 'vscode';
 
+export enum GlobalStateKeys {
+  RemoteName = 'takapuna.remote-name',
+  RemoteUrl = 'takapuna.remote-url',
+  RepoOwner = 'takapuna.repo-owner',
+  Repo = 'takapuna.repo'
+}
+
 export class GlobalStateManager {
   static globalState: vscode.Memento;
 

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { PatManager } from './PatManager';
 import { simpleGit, SimpleGit, SimpleGitOptions } from 'simple-git';
-import { GlobalStateManager } from './GlobalStateManager';
+import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
 
 const workspaceFolders = vscode.workspace.workspaceFolders;
 const baseDir = workspaceFolders && workspaceFolders[0].uri.fsPath;
@@ -16,10 +16,10 @@ const options: Partial<SimpleGitOptions> = {
 const git: SimpleGit = simpleGit(options);
 
 export class GithubProvider {
-  _remoteName = 'takapuna.remote-name';
-  _remoteUrl = 'takapuna.remote-url';
-  _owner = 'takapuna.git-owner';
-  _repo = 'takapuna.git-repo';
+  _remoteName = GlobalStateKeys.RemoteName;
+  _remoteUrl = GlobalStateKeys.RemoteUrl;
+  _owner = GlobalStateKeys.RepoOwner;
+  _repo = GlobalStateKeys.Repo;
 
   constructor(
     private readonly _context: vscode.ExtensionContext
