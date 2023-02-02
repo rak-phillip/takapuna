@@ -23,6 +23,8 @@ export default defineComponent({
   components: { TkButton, TkInput, TkCodeListItem },
   setup() {
     const snippets: Ref<Snippet[]> = ref([]);
+    const title = ref('');
+    const body = ref('');
 
     const processIncomingSnippet = (event: MessageEvent) => {
       const message = event.data;
@@ -55,14 +57,17 @@ export default defineComponent({
     });
 
     function createIssue() {
-      console.log('CREATE ISSUE');
       vscode.postMessage({
-        type: 'issue-create'
+        type: 'issue-create',
+        title: title.value,
+        body: body.value,
       })
     }
 
     return {
       snippets,
+      title,
+      body,
       createIssue,
     };
   },
@@ -71,8 +76,14 @@ export default defineComponent({
 
 <template>
   <div class="flex flex-col gap-2">
-    <tk-input placeholder="Title" />
-    <tk-input placeholder="Description" />
+    <tk-input 
+      placeholder="Title" 
+      v-model="title"
+    />
+    <tk-input 
+      placeholder="Description" 
+      v-model="body"
+    />
     <template v-for="snippet in snippets">
       <tk-code-list-item 
         :anchor="snippet.anchor"

@@ -1,6 +1,10 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
+  props: {
+    modelValue: String,
+  },
+  emits: ['update:modelValue'],
 };
 </script>
 
@@ -9,6 +13,8 @@ export default {
     <slot name="label"></slot>
     <input 
       v-bind="$attrs"
+      :value="modelValue"
+      @input="$emit('update:modelValue', ($event?.target as HTMLInputElement)?.value)"
       class="
         block
         w-full

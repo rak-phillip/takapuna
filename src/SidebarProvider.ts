@@ -55,7 +55,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         break;
       }
       case 'issue-create': {
-        this.issueCreate();
+        this.issueCreate(data.title, data.body);
         break;
       }
       }
@@ -103,7 +103,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  private async issueCreate() {
+  private async issueCreate(title: string, body: string) {
     const authToken = await PatManager.getToken();
     const octokit = new Octokit({
       auth: authToken,
@@ -116,13 +116,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       return;
     }
   
+    console.log({title, body});
+  
     const response = await octokit.request(
       'POST /repos/{owner}/{repo}/issues',
       {
         owner,
         repo,
-        title: 'Found a bug',
-        body: 'I\'m having a problem with this.',
+        title,
+        body,
       }
     );
 
