@@ -18,6 +18,9 @@ const git: SimpleGit = simpleGit(options);
 export class GithubProvider {
   _remoteName = 'takapuna.remote-name';
   _remoteUrl = 'takapuna.remote-url';
+  _owner = 'takapuna.git-owner';
+  _repo = 'takapuna.git-repo';
+
   constructor(
     private readonly _context: vscode.ExtensionContext
   ) { }
@@ -65,10 +68,24 @@ export class GithubProvider {
           return;
         }
 
+        const [_, owner, repo] = new URL(remote.description)
+          .pathname
+          .split('/');
+        
         await GlobalStateManager.setState(this._remoteName, remote.label);
         await GlobalStateManager.setState(this._remoteUrl, remote.description);
+        await GlobalStateManager.setState(this._owner, owner);
+        await GlobalStateManager.setState(this._repo, repo.replaceAll('.git', ''));
 
-        vscode.window.showInformationMessage(`Selected remote: ${ GlobalStateManager.getState(this._remoteName) } ${ GlobalStateManager.getState(this._remoteUrl) }`);
+        vscode.window.showInformationMessage(
+          `
+            Selected remote:
+            ${GlobalStateManager.getState(this._remoteName)}
+            ${GlobalStateManager.getState(this._remoteUrl)}
+            ${GlobalStateManager.getState(this._owner)}
+            ${GlobalStateManager.getState(this._repo)}
+          `
+        );
       }
     );
   }
