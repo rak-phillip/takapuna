@@ -94,7 +94,10 @@ export default defineComponent({
       placeholder="Description" 
       v-model="body"
     />
-    <template v-for="snippet in snippets">
+    <template 
+      v-for="snippet in snippets"
+      :key="snippet.id"
+    >
       <tk-code-list-item 
         :anchor="snippet.anchor"
         :active="snippet.active"
