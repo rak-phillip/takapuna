@@ -48,6 +48,9 @@ export default defineComponent({
             ...snippets.value,
           ];
           break;
+        case 'ok:issue-create':
+          clearIssue();
+          break;
       }
     };
 

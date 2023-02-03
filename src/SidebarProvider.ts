@@ -6,7 +6,6 @@ import uniqueId from 'lodash.uniqueid';
 import { Octokit } from '@octokit/rest';
 import { PatManager } from './PatManager';
 import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
-import simpleGit from 'simple-git';
 import { getHash } from './GithubProvider';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
@@ -141,7 +140,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       }
     );
 
-    vscode.window.showInformationMessage(`Created Issue #${ response.data.number }: ${ response.data.title }`);
+    vscode.window.showInformationMessage(`Created Issue #${response.data.number}: ${response.data.title}`);
+
+    this._view?.webview.postMessage({
+      type: 'ok:issue-create',
+    });
   }
 
   private issueClear() {
