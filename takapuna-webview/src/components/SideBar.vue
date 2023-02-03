@@ -6,17 +6,9 @@ import TkInput from '@/components/TkInput.vue';
 import TkTextArea from './TkTextArea.vue';
 import TkCodeListItem from './TkCodeListItem.vue';
 import type { WebviewApi } from 'vscode-webview';
+import type { Snippet } from '../../../src/snippet.interface';
 
 declare function acquireVsCodeApi(): WebviewApi<unknown>;
-
-interface Snippet {
-  id: number,
-  fileName: string;
-  relativePath: string;
-  text: string;
-  anchor: number;
-  active: number;
-}
 
 const vscode = acquireVsCodeApi();
 
@@ -36,18 +28,8 @@ export default defineComponent({
       const message = event.data;
 
       switch (message.type) {
-        case 'post-snippet':
-          snippets.value = [
-            {
-              id: message.id,
-              fileName: message.fileName,
-              relativePath: message.relativePath,
-              text: message.value,
-              anchor: message.anchor,
-              active: message.active,
-            },
-            ...snippets.value,
-          ];
+        case 'ok:snippets':
+          snippets.value = message.value;
           break;
         case 'ok:issue-create':
           clearIssue();
@@ -67,14 +49,14 @@ export default defineComponent({
     });
 
     function createIssue() {
+      console.log('POST MESSAGE');
       vscode.postMessage({
         type: 'issue-create',
         title: title.value,
         body: body.value,
-        relativePath: snippets.value[0].relativePath,
-        anchor: snippets.value[0].anchor + 1,
-        active: snippets.value[0].active + 1,
+        snippets: JSON.parse(JSON.stringify(snippets.value)),
       });
+      console.log('OK: POST MESSAGE');
     }
 
     function clearIssue() {

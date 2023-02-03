@@ -7,16 +7,13 @@ import { Octokit } from '@octokit/rest';
 import { PatManager } from './PatManager';
 import { GlobalStateKeys, GlobalStateManager } from './GlobalStateManager';
 import { getHash } from './GithubProvider';
+import type { Snippet } from './snippet.interface';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
-  _id = uniqueId();
-  _fileName = '';
-  _text = '';
-  _anchor?: number = undefined;
-  _active?: number = undefined;
+  _snippets: Snippet[] = [];
 
   constructor(
     private readonly _extensionUri: vscode.Uri,
@@ -56,7 +53,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         break;
       }
       case 'issue-create': {
-        this.issueCreate(data.title, data.body, data.relativePath, data.anchor, data.active);
+        this.issueCreate(data.title, data.body, data.snippets);
         break;
       }
       case 'issue-clear': {
@@ -82,39 +79,39 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
       await vscode.commands.executeCommand('workbench.view.extension.takapuna-sidebar-view');
 
-      const { anchor, active } = activeTextEditor.selection;
-      this._id = uniqueId();
-      this._fileName = activeTextEditor.document.fileName;
-      this._text = activeTextEditor.document.getText(activeTextEditor.selection);
-      this._anchor = anchor.line;
-      this._active = active.line;
-
+      this.compileSnippets(activeTextEditor);
       this.postSnippet();
     });
   }
 
-  private postSnippet() {
-    if (!this._fileName) {
-      return;
-    }
+  private compileSnippets(activeTextEditor: vscode.TextEditor) {
+    const { anchor, active } = activeTextEditor.selection;
 
     const workspaceFolders = vscode.workspace.workspaceFolders;
     const baseDir = workspaceFolders ? workspaceFolders[0].uri.fsPath : '';
+    const isInverseSelection = () => (active.line || 0) < (anchor.line || 0);
 
-    const isInverseSelection = () => (this._active || 0) < (this._anchor || 0);
+    this._snippets = [
+      {
+        id: uniqueId(),
+        fileName: activeTextEditor.document.fileName,
+        relativePath: activeTextEditor.document.fileName.replaceAll(baseDir, ''),
+        text: activeTextEditor.document.getText(activeTextEditor.selection),
+        anchor: isInverseSelection() ? active.line + 1 : anchor.line + 1,
+        active: isInverseSelection() ? anchor.line + 1 : active.line + 1,
+      },
+      ...this._snippets,
+    ];
+  }
 
+  private postSnippet() {
     this._view?.webview.postMessage({
-      type: 'post-snippet',
-      id: this._id,
-      fileName: this._fileName,
-      relativePath: this._fileName.replaceAll(baseDir, ''),
-      value: this._text,
-      anchor: isInverseSelection() ? this._active : this._anchor,
-      active: isInverseSelection() ? this._anchor : this._active,
+      type: 'ok:snippets',
+      value: this._snippets,
     });
   }
 
-  private async issueCreate(title: string, body: string, relativePath: string, lineStart: number, lineEnd: number) {
+  private async issueCreate(title: string, body: string, snippets: Snippet[]) {
     const authToken = await PatManager.getToken();
     const octokit = new Octokit({
       auth: authToken,
@@ -128,9 +125,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
   
     const hash = await getHash();
-    const url = `https://github.com/${owner}/${repo}/blob/${hash}/${relativePath}#L${lineStart}-L${lineEnd}`;
-  
-    const bodyMod = `${body}\n\n${url}`;
+    const snippetLinks = snippets.reduce((prev, curr) => {
+      return `${prev}\n\nhttps://github.com/${owner}/${repo}/blob/${hash}/${curr.relativePath}#L${curr.anchor}-L${curr.active}`;
+    }, '');
+    const bodyMod = `${body}${snippetLinks}`;
   
     const response = await octokit.request(
       'POST /repos/{owner}/{repo}/issues',
@@ -150,11 +148,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   private issueClear() {
-    this._id = '';
-    this._fileName = '';
-    this._text = '';
-    this._anchor = undefined;
-    this._active = undefined;
+    this._snippets = [];
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
