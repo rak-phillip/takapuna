@@ -27,13 +27,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const anchorLine = computed(() => {
-      return props.anchor + 1;
-    });
-
-    const activeLine = computed(() => {
-      return props.active + 1;
-    });
+    const anchorLine = computed(() => props.anchor + 1);
+    const activeLine = computed(() => props.active + 1);
 
     return {
       anchorLine,

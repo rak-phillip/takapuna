@@ -101,14 +101,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     const baseDir = workspaceFolders ? workspaceFolders[0].uri.fsPath : '';
 
+    const isInverseSelection = () => (this._active || 0) < (this._anchor || 0);
+
     this._view?.webview.postMessage({
       type: 'post-snippet',
       id: this._id,
       fileName: this._fileName,
       relativePath: this._fileName.replaceAll(baseDir, ''),
       value: this._text,
-      anchor: this._anchor,
-      active: this._active,
+      anchor: isInverseSelection() ? this._active : this._anchor,
+      active: isInverseSelection() ? this._anchor : this._active,
     });
   }
 

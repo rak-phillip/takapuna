@@ -27,6 +27,7 @@ export default defineComponent({
     const snippets: Ref<Snippet[]> = ref([]);
     const title = ref('');
     const body = ref('');
+
     const isCreateDisabled = computed(() => {
       return !title.value || !body.value;
     });
