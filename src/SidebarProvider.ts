@@ -60,6 +60,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         this.issueCreate(data.title, data.body, data.relativePath, data.anchor, data.active);
         break;
       }
+      case 'issue-clear': {
+        this.issueClear();
+        break;
+      }
       }
     });
   }
@@ -138,6 +142,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     );
 
     vscode.window.showInformationMessage(`Created Issue #${ response.data.number }: ${ response.data.title }`);
+  }
+
+  private issueClear() {
+    this._id = '';
+    this._fileName = '';
+    this._text = '';
+    this._anchor = undefined;
+    this._active = undefined;
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {

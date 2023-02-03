@@ -73,11 +73,22 @@ export default defineComponent({
       });
     }
 
+    function clearIssue() {
+      vscode.postMessage({
+        type: 'issue-clear',
+      });
+
+      title.value = '';
+      body.value = '';
+      snippets.value = [];
+    }
+
     return {
       snippets,
       title,
       body,
       createIssue,
+      clearIssue,
       isCreateDisabled,
     };
   },
@@ -112,7 +123,9 @@ export default defineComponent({
     >
       Create issue
     </tk-button>
-    <tk-button secondary>
+    <tk-button secondary
+      @click="clearIssue"
+    >
       Cancel
     </tk-button>
   </div>
