@@ -3,6 +3,7 @@ import { defineComponent, onBeforeMount, onBeforeUnmount, ref, computed } from '
 import type { Ref } from 'vue';
 import TkButton from '@/components/TkButton.vue';
 import TkInput from '@/components/TkInput.vue';
+import TkTextArea from './TkTextArea.vue';
 import TkCodeListItem from './TkCodeListItem.vue';
 import type { WebviewApi } from 'vscode-webview';
 
@@ -21,7 +22,7 @@ const vscode = acquireVsCodeApi();
 
 export default defineComponent({
   name: 'tk-sidebar',
-  components: { TkButton, TkInput, TkCodeListItem },
+  components: { TkButton, TkInput, TkTextArea, TkCodeListItem },
   setup() {
     const snippets: Ref<Snippet[]> = ref([]);
     const title = ref('');
@@ -89,7 +90,7 @@ export default defineComponent({
       placeholder="Title" 
       v-model="title"
     />
-    <tk-input 
+    <tk-text-area
       placeholder="Description" 
       v-model="body"
     />
