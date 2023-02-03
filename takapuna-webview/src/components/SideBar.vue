@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, ref, computed } from 'vue';
 import type { Ref } from 'vue';
 import TkButton from '@/components/TkButton.vue';
 import TkInput from '@/components/TkInput.vue';
@@ -26,6 +26,9 @@ export default defineComponent({
     const snippets: Ref<Snippet[]> = ref([]);
     const title = ref('');
     const body = ref('');
+    const isCreateDisabled = computed(() => {
+      return !title.value || !body.value;
+    });
 
     const processIncomingSnippet = (event: MessageEvent) => {
       const message = event.data;
@@ -66,7 +69,7 @@ export default defineComponent({
         relativePath: snippets.value[0].relativePath,
         anchor: snippets.value[0].anchor + 1,
         active: snippets.value[0].active + 1,
-      })
+      });
     }
 
     return {
@@ -74,6 +77,7 @@ export default defineComponent({
       title,
       body,
       createIssue,
+      isCreateDisabled,
     };
   },
 });
@@ -99,6 +103,7 @@ export default defineComponent({
     </template>
     <tk-button 
       primary
+      :disabled="isCreateDisabled"
       @click="createIssue"
     >
       Create issue

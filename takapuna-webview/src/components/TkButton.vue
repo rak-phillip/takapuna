@@ -17,6 +17,8 @@ const buttonClass = computed(() => {
     'outline-offset-2': true, 
     'hover:cursor-pointer': true,
     'focus:outline-tk-focusBorder': true,
+    'disabled:cursor-not-allowed': true,
+    'disabled:opacity-25': true,
   };
   if (props.primary) {
     return {
